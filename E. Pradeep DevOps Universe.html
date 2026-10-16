@@ -1,0 +1,923 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>E. Pradeep DevOps Universe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Exo+2:wght@400;500;600&family=Share+Tech+Mono&display=swap">
+<style>
+/* Deep-space portfolio. Dark only, by design. Scroll drives a UFO and alien
+   through the scenes. Everything is CSS 3D or plain DOM; no external libraries. */
+:root {
+  --bg: #05060c;
+  --panel: rgba(14, 18, 36, 0.6);
+  --glass: rgba(120, 220, 255, 0.08);
+  --fg: #e6ebff;
+  --muted: #8f98c4;
+  --line: rgba(130, 210, 255, 0.2);
+  --neon: #39ff9c;
+  --cyan: #5ee7ff;
+  --violet: #a77bff;
+  --glow-neon: 0 0 18px rgba(57, 255, 156, 0.45);
+  --glow-violet: 0 0 22px rgba(167, 123, 255, 0.45);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; background: var(--bg); }
+body {
+  margin: 0;
+  color: var(--fg);
+  background-color: var(--bg);
+  font-family: "Exo 2", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+h1, h2, h3 { font-family: "Orbitron", "Arial Black", sans-serif; font-weight: 700; line-height: 1.2; margin: 0; text-wrap: balance; }
+p { margin: 0 0 14px; }
+a { color: var(--cyan); text-decoration: none; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--neon); outline-offset: 3px; border-radius: 6px; }
+.mono { font-family: "Share Tech Mono", ui-monospace, Menlo, Consolas, monospace; color: var(--muted); font-size: 0.85rem; letter-spacing: 0.05em; }
+
+/* ---------- Starfield + nebula (fixed behind everything) ---------- */
+.space {
+  position: fixed; inset: 0; z-index: -2; pointer-events: none;
+  background:
+    /* Milky Way: a soft diagonal band of dust and light */
+    radial-gradient(ellipse 70% 14% at 50% 40%, rgba(200,225,255,0.16), transparent 75%),
+    radial-gradient(ellipse 55% 9% at 52% 42%, rgba(255,255,255,0.14), transparent 70%),
+    radial-gradient(ellipse 40% 6% at 46% 39%, rgba(230,240,255,0.12), transparent 70%),
+    /* Blue nebula clouds */
+    radial-gradient(ellipse 50% 40% at 18% 18%, rgba(40,110,255,0.30), transparent 70%),
+    radial-gradient(ellipse 45% 38% at 82% 68%, rgba(60,140,255,0.24), transparent 70%),
+    radial-gradient(ellipse 35% 30% at 70% 12%, rgba(120,90,255,0.16), transparent 70%),
+    radial-gradient(ellipse 40% 32% at 25% 85%, rgba(57,255,156,0.10), transparent 70%),
+    var(--bg);
+}
+/* Background UFOs: small ships flying behind the content */
+.bg-ufo {
+  position: fixed; z-index: -1; width: 46px; height: 24px; pointer-events: none; opacity: 0.55;
+}
+.bg-ufo::before { content: ""; position: absolute; left: 0; right: 0; top: 10px; height: 8px; border-radius: 50%; background: linear-gradient(#dfe8ff, #6f7ab0); box-shadow: 0 0 8px rgba(94,231,255,0.7); }
+.bg-ufo::after { content: ""; position: absolute; left: 14px; top: 0; width: 16px; height: 11px; border-radius: 50% 50% 0 0; background: rgba(94,231,255,0.35); }
+.bg-ufo i { position: absolute; top: 14px; width: 3px; height: 3px; border-radius: 50%; background: var(--neon); box-shadow: 0 0 6px var(--neon); animation: blink 1s ease-in-out infinite; }
+.bg-ufo i:nth-child(1) { left: 8px; }
+.bg-ufo i:nth-child(2) { left: 36px; animation-delay: .5s; background: var(--violet); box-shadow: 0 0 6px var(--violet); }
+.bg-ufo.u1 { top: 14%; left: -80px; animation: fly-across 38s linear infinite; }
+.bg-ufo.u2 { top: 62%; left: -80px; width: 30px; height: 16px; opacity: 0.35; animation: fly-across 56s linear infinite; animation-delay: -20s; }
+.bg-ufo.u2::before { top: 6px; height: 5px; }
+.bg-ufo.u2::after { left: 9px; width: 11px; height: 7px; }
+.bg-ufo.u3 { top: 82%; left: -80px; width: 60px; height: 32px; opacity: 0.45; animation: fly-across 72s linear infinite; animation-delay: -40s; }
+.bg-ufo.u3::before { top: 13px; height: 10px; }
+.bg-ufo.u3::after { left: 19px; width: 22px; height: 15px; }
+.bg-ufo.u3 i { top: 18px; }
+.bg-ufo.u3 i:nth-child(1) { left: 11px; }
+.bg-ufo.u3 i:nth-child(2) { left: 48px; }
+@keyframes fly-across {
+  0% { transform: translate(0, 0) rotate(-6deg); }
+  50% { transform: translate(55vw, -30px) rotate(4deg); }
+  100% { transform: translate(120vw, 10px) rotate(-6deg); }
+}
+.stars { position: fixed; inset: -50% 0 0 0; z-index: -1; pointer-events: none; }
+.stars::before, .stars::after {
+  content: ""; position: absolute; inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 30% 75%, #cfe9ff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 55% 40%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 78% 15%, #cfe9ff 50%, transparent 51%),
+    radial-gradient(1px 1px at 92% 60%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 65% 88%, #bfe3ff 50%, transparent 51%),
+    radial-gradient(1px 1px at 22% 48%, #fff 50%, transparent 51%);
+  background-size: 420px 420px;
+  animation: drift 140s linear infinite;
+}
+.stars::after { background-size: 260px 260px; animation-duration: 90s; opacity: 0.7; }
+/* Dense star fields: many tiny stars in three depths, with a soft twinkle */
+.star-layer { position: fixed; inset: -40% 0 0 0; z-index: -1; pointer-events: none; }
+.star-layer.far { background-image:
+    radial-gradient(0.6px 0.6px at 7% 13%, #fff, transparent),
+    radial-gradient(0.6px 0.6px at 19% 67%, #d6e8ff, transparent),
+    radial-gradient(0.6px 0.6px at 33% 28%, #fff, transparent),
+    radial-gradient(0.6px 0.6px at 46% 81%, #cfe2ff, transparent),
+    radial-gradient(0.6px 0.6px at 58% 9%, #fff, transparent),
+    radial-gradient(0.6px 0.6px at 71% 54%, #fff, transparent),
+    radial-gradient(0.6px 0.6px at 86% 33%, #d6e8ff, transparent),
+    radial-gradient(0.6px 0.6px at 96% 88%, #fff, transparent);
+  background-size: 180px 180px; animation: drift 220s linear infinite; }
+.star-layer.mid { background-image:
+    radial-gradient(1px 1px at 12% 44%, #fff, transparent),
+    radial-gradient(1px 1px at 41% 16%, #bfe3ff, transparent),
+    radial-gradient(1px 1px at 63% 72%, #fff, transparent),
+    radial-gradient(1px 1px at 84% 21%, #fff, transparent),
+    radial-gradient(1px 1px at 29% 92%, #cfe9ff, transparent);
+  background-size: 300px 300px; animation: drift 160s linear infinite; }
+.star-layer.near { background-image:
+    radial-gradient(1.8px 1.8px at 24% 36%, #ffffff, transparent),
+    radial-gradient(1.6px 1.6px at 77% 58%, #bfe9ff, transparent),
+    radial-gradient(1.8px 1.8px at 50% 6%, #ffffff, transparent);
+  background-size: 520px 520px; animation: drift 110s linear infinite; }
+.star-layer.far, .star-layer.mid, .star-layer.near { transform: translateZ(0); }
+@keyframes twinkle { 0%,100% { opacity: 0.85; } 50% { opacity: 0.45; } }
+.star-layer.mid { filter: drop-shadow(0 0 1px rgba(200,230,255,0.6)); animation: drift 160s linear infinite, twinkle 4s ease-in-out infinite; }
+@keyframes drift { from { transform: translateY(0); } to { transform: translateY(420px); } }
+
+/* ---------- Loader ---------- */
+#loader {
+  position: fixed; inset: 0; z-index: 100; background: var(--bg);
+  display: grid; place-items: center; transition: opacity 0.7s ease, visibility 0.7s;
+  overflow: hidden;
+}
+#loader.hide { opacity: 0; visibility: hidden; }
+#loader .track { position: absolute; left: -20%; right: -20%; top: 50%; height: 1px; background: linear-gradient(90deg, transparent, var(--cyan), transparent); }
+#loader .mini-ufo { position: absolute; top: calc(50% - 40px); left: -15%; width: 90px; height: 50px; animation: loader-fly 1.8s ease-in-out forwards; }
+#loader .mini-ufo::before { content: ""; position: absolute; left: 0; right: 0; top: 18px; height: 16px; border-radius: 50%; background: linear-gradient(#e6ebff, #7b86b8); box-shadow: 0 0 14px var(--cyan); }
+#loader .mini-ufo::after { content: ""; position: absolute; left: 22px; top: 6px; width: 26px; height: 18px; border-radius: 50% 50% 0 0; background: rgba(94,231,255,0.35); border: 1px solid rgba(94,231,255,0.7); }
+#loader p { position: absolute; bottom: 30%; left: 0; right: 0; text-align: center; font-family: "Share Tech Mono", monospace; color: var(--muted); letter-spacing: 0.2em; font-size: 0.8rem; }
+@keyframes loader-fly { to { left: 110%; } }
+
+/* ---------- Fixed nav ---------- */
+nav.top {
+  position: fixed; z-index: 50; top: env(safe-area-inset-top, 0px); left: 0; right: 0;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 12px max(16px, env(safe-area-inset-right, 0px)) 12px max(16px, env(safe-area-inset-left, 0px));
+  background: rgba(5,6,12,0.55); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+nav.top .brand { font-family: "Orbitron", sans-serif; font-size: 0.9rem; letter-spacing: 0.15em; color: var(--neon); }
+nav.top ul { display: flex; gap: 18px; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; }
+nav.top a { color: var(--muted); font-size: 0.9rem; border-bottom: 1px solid transparent; }
+nav.top a:hover { color: var(--fg); border-bottom-color: var(--neon); }
+
+/* ---------- Beats (scroll scenes) ---------- */
+.beat {
+  position: relative; min-height: 100vh; min-height: 100svh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 110px 0 60px; max-width: 980px; margin: 0 auto;
+}
+.beat.tall { min-height: 130vh; justify-content: flex-start; }
+[data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity 0.9s ease, transform 0.9s cubic-bezier(.2,.7,.2,1); }
+[data-reveal].show { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { [data-reveal] { opacity: 1; transform: none; transition: none; } }
+
+.eyebrow { font-family: "Share Tech Mono", monospace; color: var(--cyan); letter-spacing: 0.2em; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 14px; }
+.big { font-size: clamp(2.2rem, 7vw, 4.4rem); letter-spacing: 0.02em; text-shadow: var(--glow-neon); }
+.h2-sub { font-size: clamp(1.6rem, 4.5vw, 2.6rem); text-shadow: none; }
+.grad {
+  background: linear-gradient(90deg, var(--neon), var(--cyan), var(--violet));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.lead { font-size: 1.12rem; max-width: 56ch; color: var(--fg); }
+.glass {
+  background: var(--glass); border: 1px solid var(--line); border-radius: 18px;
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 26px;
+}
+.btns { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 26px; }
+.btn {
+  display: inline-block; padding: 12px 22px; border-radius: 999px;
+  border: 1px solid var(--neon); color: var(--neon); font-family: "Orbitron", sans-serif; font-size: 0.8rem; letter-spacing: 0.1em;
+  box-shadow: var(--glow-neon); background: rgba(57,255,156,0.06); transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn.alt { border-color: var(--violet); color: #d9c8ff; box-shadow: var(--glow-violet); background: rgba(167,123,255,0.08); }
+.btn:hover { transform: translateY(-2px) scale(1.02); }
+
+/* ---------- The UFO and alien (fixed; driven by scroll) ---------- */
+#ufo {
+  position: fixed; z-index: 20; left: 80%; top: 24%; width: 220px; height: 150px;
+  transform: translate(-50%, -50%) scale(0.55);
+  pointer-events: none; will-change: transform, left, top, opacity;
+  perspective: 600px;
+}
+.ufo-body { position: absolute; inset: 0; animation: bob 4.2s ease-in-out infinite; transform-style: preserve-3d; }
+@keyframes bob { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-12px) rotate(2deg); } }
+
+.saucer {
+  position: absolute; left: 0; right: 0; top: 78px; height: 46px; border-radius: 50%;
+  background: linear-gradient(180deg, #f0f4ff 0%, #b6c3e8 35%, #4b5a86 70%, #1b2440 100%);
+  box-shadow: 0 0 26px rgba(94,231,255,0.35), inset 0 -6px 12px rgba(0,0,0,0.5);
+}
+.saucer::after {
+  content: ""; position: absolute; left: 18%; right: 18%; top: 40%; height: 4px; border-radius: 4px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  box-shadow: 0 0 12px var(--cyan);
+}
+.lights { position: absolute; left: 0; right: 0; top: 100px; display: flex; justify-content: space-around; padding: 0 30px; }
+.lights i { width: 9px; height: 9px; border-radius: 50%; background: var(--neon); box-shadow: 0 0 10px var(--neon); animation: blink 1.2s ease-in-out infinite; }
+.lights i:nth-child(2) { animation-delay: 0.3s; background: var(--cyan); box-shadow: 0 0 10px var(--cyan); }
+.lights i:nth-child(3) { animation-delay: 0.6s; background: var(--violet); box-shadow: 0 0 10px var(--violet); }
+.lights i:nth-child(4) { animation-delay: 0.9s; }
+@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+
+.dome {
+  position: absolute; left: 62px; top: 14px; width: 96px; height: 92px; border-radius: 50% 50% 42% 42%;
+  background: linear-gradient(160deg, rgba(200,245,255,0.55), rgba(94,231,255,0.1) 45%, rgba(20,30,60,0.4));
+  border: 1px solid rgba(200,245,255,0.5);
+  box-shadow: inset 0 0 22px rgba(94,231,255,0.35), 0 0 18px rgba(94,231,255,0.25);
+  overflow: hidden;
+  transition: transform 0.8s ease;
+}
+.dome::after {
+  content: ""; position: absolute; left: 14px; top: 10px; width: 26px; height: 42px; border-radius: 50%;
+  background: linear-gradient(rgba(255,255,255,0.6), transparent 70%); transform: rotate(18deg);
+}
+#ufo.landed .dome { transform: translateY(-10px) rotate(-6deg); }
+
+/* The alien */
+.alien { position: absolute; left: 50%; top: 56%; width: 56px; height: 66px; margin: -33px 0 0 -28px; transition: transform 0.7s cubic-bezier(.2,.8,.2,1); }
+.alien .head {
+  position: absolute; left: 4px; top: 0; width: 48px; height: 42px; border-radius: 50% 50% 46% 46%;
+  background: radial-gradient(circle at 35% 30%, #e6fff1, #39ff9c 55%, #0d7a52 100%);
+  box-shadow: 0 0 12px rgba(57,255,156,0.5);
+}
+.alien .eye {
+  position: absolute; top: 14px; width: 12px; height: 16px; border-radius: 50%; background: #05130d; transform-origin: center;
+  animation: blink-eye 4.6s infinite;
+}
+.alien .eye.l { left: 9px; }
+.alien .eye.r { left: 27px; }
+.alien .eye::after { content: ""; position: absolute; left: 2px; top: 3px; width: 4px; height: 4px; border-radius: 50%; background: #fff; }
+@keyframes blink-eye { 0%,94%,100% { transform: scaleY(1); } 96% { transform: scaleY(0.1); } }
+.alien .mouth {
+  position: absolute; left: 19px; top: 31px; width: 12px; height: 6px; border-bottom: 2.5px solid #05130d; border-radius: 0 0 14px 14px;
+  transition: all 0.4s ease;
+}
+.alien .body {
+  position: absolute; left: 12px; top: 40px; width: 32px; height: 26px; border-radius: 14px 14px 16px 16px;
+  background: linear-gradient(#34506a, #14202d);
+}
+.alien .arm { position: absolute; left: 40px; top: 44px; width: 7px; height: 22px; border-radius: 6px; background: #39ff9c; transform-origin: 50% 0; }
+.alien .arm.l { left: 8px; transform: rotate(18deg); }
+.alien .arm.r { transform: rotate(-18deg); }
+
+/* Alien moods (set by scroll) */
+.alien.curious .eye { height: 19px; }
+.alien.curious .mouth { width: 8px; height: 4px; left: 21px; border-bottom-width: 2px; }
+.alien.smile .mouth { width: 18px; height: 9px; left: 17px; border-bottom-width: 3px; border-radius: 0 0 20px 20px; }
+.alien.wave .mouth { width: 18px; height: 9px; left: 17px; border-bottom-width: 3px; border-radius: 0 0 20px 20px; }
+.alien.wave .arm.r { animation: wave 0.9s ease-in-out infinite alternate; }
+.alien.point .arm.r { transform: rotate(-70deg) translateY(-2px); transition: transform 0.6s; }
+@keyframes wave { from { transform: rotate(-30deg); } to { transform: rotate(-120deg); } }
+.alien.stand { transform: translateY(-22px) scale(1.08); }
+
+.bubble {
+  position: absolute; left: 50%; top: -28px; transform: translate(-50%, -100%);
+  white-space: nowrap; padding: 8px 14px; border-radius: 12px; font-family: "Share Tech Mono", monospace; font-size: 0.85rem;
+  background: rgba(230,235,255,0.95); color: #0b0f1f; box-shadow: 0 0 18px rgba(94,231,255,0.5);
+  opacity: 0; transition: opacity 0.4s;
+}
+.bubble.on { opacity: 1; }
+
+.beat > * { position: relative; z-index: 1; }
+
+/* ---------- Scene 1: intro ---------- */
+.intro .big { max-width: 9ch; }
+
+/* ---------- Scene 2: greeting ---------- */
+.greet-name { font-size: clamp(2rem, 6vw, 3.6rem); margin: 10px 0 12px; }
+.intro-card { max-width: 52ch; }
+
+/* ---------- Scene 3: CI/CD pipeline ---------- */
+.pipe-wrap { margin-top: 28px; }
+.pipe-track {
+  position: relative; display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 6px;
+  padding-top: 8px;
+}
+.pipe-track::before {
+  content: ""; position: absolute; left: 5%; right: 5%; top: 33px; height: 3px;
+  background: linear-gradient(90deg, rgba(94,231,255,0.25), rgba(167,123,255,0.25));
+  border-radius: 3px;
+}
+.pipe-dot {
+  position: absolute; top: 25px; left: 5%; width: 16px; height: 16px; margin-left: -8px; border-radius: 50%;
+  background: var(--neon); box-shadow: 0 0 16px var(--neon), 0 0 30px var(--neon);
+  transition: left 0.8s cubic-bezier(.5,0,.2,1);
+}
+.p-stage { text-align: center; min-width: 0; opacity: 0.55; transition: opacity 0.4s, transform 0.4s; }
+.p-stage .icon {
+  width: 46px; height: 46px; margin: 0 auto 8px; border-radius: 50%; display: grid; place-items: center;
+  border: 1px solid var(--line); background: rgba(10,14,30,0.8); font-family: "Share Tech Mono", monospace; font-size: 1rem; color: var(--cyan);
+  position: relative;
+}
+.p-stage .lbl { font-family: "Orbitron", sans-serif; font-size: 0.6rem; letter-spacing: 0.04em; color: var(--fg); line-height: 1.25; }
+.p-stage.active { opacity: 1; transform: translateY(-3px); }
+.p-stage.active .icon { border-color: var(--neon); box-shadow: var(--glow-neon); color: var(--neon); }
+.p-stage.done .icon { border-color: var(--neon); color: var(--neon); }
+.p-stage.done .icon::after {
+  content: "✓"; position: absolute; right: -6px; top: -6px; width: 18px; height: 18px; border-radius: 50%;
+  background: var(--neon); color: #03140c; font-size: 0.7rem; display: grid; place-items: center; font-weight: 700;
+}
+@media (max-width: 720px) {
+  .pipe-track { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 18px; }
+  .pipe-track::before, .pipe-dot { display: none; }
+}
+
+.dash { margin-top: 26px; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; }
+.dash .k { font-family: "Share Tech Mono", monospace; font-size: 0.75rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+.dash .v { font-family: "Orbitron", sans-serif; font-size: 1.15rem; margin-top: 6px; color: var(--fg); }
+.dash .v.ok { color: var(--neon); text-shadow: var(--glow-neon); }
+.bar { height: 8px; border-radius: 8px; background: rgba(255,255,255,0.08); overflow: hidden; margin-top: 10px; }
+.bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--cyan), var(--neon)); transition: width 0.8s ease; box-shadow: 0 0 12px var(--neon); }
+.sim-note { font-family: "Share Tech Mono", monospace; font-size: 0.75rem; color: var(--muted); margin-top: 12px; }
+
+/* ---------- Scene 4: projects as planets ---------- */
+.planets { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 22px; margin-top: 28px; align-items: center; }
+.planet {
+  justify-self: center; width: 160px; height: 160px; border-radius: 50%; border: none; cursor: pointer; position: relative; color: #fff;
+  font-family: "Orbitron", sans-serif; font-size: 0.8rem; letter-spacing: 0.06em;
+  animation: planet-float 6s ease-in-out infinite; transition: transform 0.35s, box-shadow 0.35s; background: none; padding: 0;
+}
+.planet .globe { position: absolute; inset: 0; border-radius: 50%; }
+.planet .p1 { background: radial-gradient(circle at 35% 30%, #d9fbff, #39ff9c 40%, #0a4f3b 80%); box-shadow: inset -18px -20px 40px rgba(0,0,0,0.55), 0 0 30px rgba(57,255,156,0.35); }
+.planet .p2 { background: radial-gradient(circle at 35% 30%, #efe0ff, #a77bff 45%, #2b1462 85%); box-shadow: inset -18px -20px 40px rgba(0,0,0,0.6), 0 0 30px rgba(167,123,255,0.4); }
+.planet .p3 { background: radial-gradient(circle at 35% 30%, #d8f3ff, #5ee7ff 45%, #0a3a57 85%); box-shadow: inset -18px -20px 40px rgba(0,0,0,0.6), 0 0 30px rgba(94,231,255,0.4); }
+.planet .ring { position: absolute; left: -22%; right: -22%; top: 42%; height: 16%; border-radius: 50%; border: 2px solid rgba(255,255,255,0.35); transform: rotate(-16deg); }
+.planet .name { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 0 22px; text-shadow: 0 0 8px rgba(0,0,0,0.7); }
+.planet:hover, .planet:focus-visible, .planet.on { transform: scale(1.08); }
+.planet.on { box-shadow: 0 0 40px rgba(255,255,255,0.25); }
+@keyframes planet-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+.planet:nth-child(2) { animation-delay: -2s; }
+.planet:nth-child(3) { animation-delay: -4s; }
+
+.planet-info { margin-top: 26px; min-height: 170px; }
+.planet-info h3 { color: var(--neon); font-size: 1.15rem; margin-bottom: 10px; }
+.planet-info ul { margin: 0 0 12px; padding-left: 18px; }
+.planet-info li { margin-bottom: 4px; }
+.planet-info .stack { color: var(--violet); font-family: "Share Tech Mono", monospace; font-size: 0.85rem; }
+
+/* ---------- Scene 5: experience and qualifications ---------- */
+.flight { display: grid; gap: 14px; margin-top: 26px; }
+.flight-item { display: grid; grid-template-columns: 170px 1fr; gap: 6px 22px; padding: 18px 22px; }
+.flight-item .when { color: var(--neon); font-family: "Share Tech Mono", monospace; font-size: 0.85rem; }
+.flight-item h3 { font-size: 1rem; margin-bottom: 2px; }
+.flight-item .co { color: var(--muted); font-size: 0.92rem; margin-bottom: 6px; }
+.flight-item ul { margin: 0; padding-left: 18px; }
+.flight-item li { margin-bottom: 4px; }
+.qual { margin-top: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.qual h3 { color: var(--cyan); font-size: 0.95rem; margin-bottom: 10px; }
+.qual ul { list-style: none; margin: 0; padding: 0; }
+.qual li { padding: 8px 0; border-top: 1px solid var(--line); }
+.qual li:first-child { border-top: 0; padding-top: 0; }
+@media (max-width: 560px) { .flight-item { grid-template-columns: 1fr; } }
+
+/* ---------- Scene 6: the galaxy of tools ---------- */
+.galaxy-wrap {
+  position: relative; height: 640px; margin-top: 10px; perspective: 1000px; overflow: hidden;
+  display: grid; place-items: center;
+}
+.disc {
+  position: absolute; left: 50%; top: 50%; width: 0; height: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(62deg) scale(var(--s, 1));
+}
+/* Glowing dust lanes, one per arm, drawn under the orbiting tools */
+.dust {
+  position: absolute; left: -250px; top: -250px; width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, transparent 35%, rgba(94,231,255,0.08) 45%, rgba(167,123,255,0.12) 60%, transparent 72%);
+  pointer-events: none;
+}
+.core {
+  position: absolute; left: -46px; top: -46px; width: 92px; height: 92px; border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #ffffff, #5ee7ff 30%, #7a4bff 65%, rgba(20,10,60,0) 72%);
+  box-shadow: 0 0 60px rgba(94,231,255,0.6), 0 0 120px rgba(167,123,255,0.4);
+  animation: core-pulse 3.2s ease-in-out infinite;
+}
+.core-label {
+  position: absolute; left: -46px; top: -10px; width: 92px; text-align: center;
+  font-family: "Orbitron", sans-serif; font-size: 0.6rem; letter-spacing: 0.12em; color: #05060c; font-weight: 700;
+  transform: rotateX(-62deg); /* keep the label readable on the tilted disc */
+}
+@keyframes core-pulse { 0%,100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.08); opacity: 1; } }
+
+/* Each orbit is one wrapper that spins; its speed depends on its radius, so
+   inner tools move faster than outer ones, as in a real spiral galaxy. */
+.orb {
+  position: absolute; left: 0; top: 0; width: 0; height: 0;
+  animation: spin var(--d) linear infinite;
+}
+.tool {
+  position: absolute; left: 0; top: 0; width: 0; height: 0;
+  transform: rotate(var(--a)) translateX(var(--r));
+}
+.tool-label {
+  position: absolute; left: 0; top: 0; white-space: nowrap;
+  transform: translate(-50%, -50%);
+  padding: 7px 16px; border-radius: 999px;
+  font-family: "Share Tech Mono", monospace; font-size: 1.05rem; color: var(--fg);
+  background: rgba(14,18,36,0.92); border: 1px solid var(--line);
+  box-shadow: 0 0 12px rgba(94,231,255,0.2);
+  animation: counter var(--d) linear infinite;
+  transition: border-color 0.25s, box-shadow 0.25s, color 0.25s;
+  cursor: default;
+}
+.tool-label:hover { border-color: var(--neon); box-shadow: var(--glow-neon); color: var(--neon); }
+.tool.cloud .tool-label { border-color: rgba(57,255,156,0.6); }
+
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes counter {
+  from { transform: translate(-50%, -50%) rotate(calc(-1 * var(--a))); }
+  to   { transform: translate(-50%, -50%) rotate(calc(-1 * var(--a) - 360deg)); }
+}
+
+@media (max-width: 720px) {
+  .galaxy-wrap { height: 460px; }
+  .disc { --s: 0.5; }
+  .tool-label { font-size: 0.8rem; padding: 4px 10px; }
+}
+
+/* Eight planets orbiting the galaxy. Each pill carries a small glowing sphere. */
+.tool-label.planet-label { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px 6px 9px; border-color: var(--c1); font-size: 0.95rem; }
+.tool-label.planet-label::before {
+  content: ""; width: 16px; height: 16px; border-radius: 50%; flex: none;
+  background: radial-gradient(circle at 35% 30%, #ffffff, var(--c1) 40%, var(--c2) 100%);
+  box-shadow: 0 0 10px var(--c1);
+}
+.tool.planet-tool .tool-label { color: var(--c1); }
+
+/* ---------- Contact ---------- */
+.contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; margin-top: 22px; }
+.contact-grid a { display: block; padding: 16px 18px; border-radius: 14px; border: 1px solid var(--line); background: rgba(14,18,36,0.6); word-break: break-word; }
+.contact-grid a:hover { border-color: var(--neon); box-shadow: var(--glow-neon); }
+.contact-grid .k { font-family: "Share Tech Mono", monospace; color: var(--muted); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; display: block; }
+.outro { text-align: center; padding-top: 30px; font-family: "Orbitron", sans-serif; font-size: 1.1rem; color: var(--neon); text-shadow: var(--glow-neon); }
+
+footer.site { text-align: center; color: var(--muted); font-family: "Share Tech Mono", monospace; font-size: 0.8rem; padding: 24px 0 40px; position: relative; z-index: 1; }
+
+/* ---------- Responsive UFO ---------- */
+@media (max-width: 640px) {
+  #ufo { width: 180px; height: 124px; }
+  nav.top ul { gap: 12px; }
+  .planets { grid-template-columns: 1fr; }
+  .planet { width: 130px; height: 130px; }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  html { scroll-behavior: auto; }
+  #loader { display: none; }
+}
+</style>
+
+<div id="loader" aria-hidden="true">
+  <div class="track"></div>
+  <div class="mini-ufo"></div>
+  <p>ENTERING THE GALAXY…</p>
+</div>
+
+<div class="space" aria-hidden="true"></div>
+<div class="stars" aria-hidden="true"></div>
+<div class="star-layer far" aria-hidden="true"></div>
+<div class="star-layer mid" aria-hidden="true"></div>
+<div class="star-layer near" aria-hidden="true"></div>
+<div class="bg-ufo u1" aria-hidden="true"><i></i><i></i></div>
+<div class="bg-ufo u2" aria-hidden="true"><i></i><i></i></div>
+<div class="bg-ufo u3" aria-hidden="true"><i></i><i></i></div>
+
+<nav class="top" aria-label="Main">
+  <span class="brand">E. PRADEEP</span>
+  <ul>
+    <li><a href="#pipeline">Pipeline</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- The UFO and alien. Position and mood are set by the scroll script. -->
+<div id="ufo" aria-hidden="true">
+  <div class="ufo-body">
+    <div class="dome"></div>
+    <div class="alien curious" id="alien">
+      <div class="arm l"></div>
+      <div class="body"></div>
+      <div class="arm r"></div>
+      <div class="head"></div>
+      <div class="eye l"></div>
+      <div class="eye r"></div>
+      <div class="mouth"></div>
+    </div>
+    <div class="saucer"></div>
+    <div class="lights"><i></i><i></i><i></i><i></i></div>
+  </div>
+  <div class="bubble" id="bubble"></div>
+</div>
+
+<main>
+
+  <!-- Scene 1: intro -->
+  <section class="beat intro" data-beat="intro" id="top">
+    <div class="eyebrow" data-reveal>▸ Transmission received · Chennai, India</div>
+    <h1 class="big grad" data-reveal>Welcome to My Universe.</h1>
+    <p class="lead" data-reveal style="margin-top:18px">Scroll to fly through. A UFO is cruising the galaxy, and its pilot is curious about who is watching.</p>
+    <p class="mono" data-reveal style="margin-top:28px">↓ SCROLL TO CONTINUE</p>
+  </section>
+
+  <!-- Scene 2: greeting. The UFO lands here. -->
+  <section class="beat" data-beat="greet" id="greet">
+    <div class="eyebrow" data-reveal>▸ Landing platform secured</div>
+    <h2 class="greet-name grad" data-reveal>Hi, I'm Pradeep! 👋</h2>
+    <div class="glass intro-card" data-reveal>
+      <p class="lead">I'm a DevOps &amp; Cloud Engineer passionate about automating infrastructure, building CI/CD pipelines, and deploying applications to the cloud.</p>
+      <p class="mono" style="margin:0">System Analyst · 5+ years in production support, system administration and QA · AWS Certified Solutions Architect – Associate</p>
+    </div>
+    <div class="btns" data-reveal>
+      <a class="btn" href="#projects">Explore My Projects</a>
+      <a class="btn alt" href="#contact">Let's Connect</a>
+    </div>
+  </section>
+
+  <!-- Scene 3: the CI/CD pipeline, animated -->
+  <section class="beat tall" data-beat="pipe" id="pipeline">
+    <div class="eyebrow" data-reveal>▸ Scene 03 · DevOps universe</div>
+    <h2 class="big h2-sub" data-reveal>Code to <span class="grad">cloud</span>, automated.</h2>
+    <p class="lead" data-reveal style="margin-top:12px">A simulated pipeline from commit to running application. The light travels stage by stage, and each stage lights up as it passes. Each stage is a step I have built or supported, not a real build run.</p>
+
+    <div class="glass pipe-wrap" data-reveal>
+      <div class="pipe-track" id="pipeTrack">
+        <div class="pipe-dot" id="pipeDot"></div>
+        <div class="p-stage"><div class="icon">&lt;/&gt;</div><div class="lbl">Code</div></div>
+        <div class="p-stage"><div class="icon">↑</div><div class="lbl">Git Push</div></div>
+        <div class="p-stage"><div class="icon">⎇</div><div class="lbl">GitHub</div></div>
+        <div class="p-stage"><div class="icon">⚙</div><div class="lbl">Jenkins</div></div>
+        <div class="p-stage"><div class="icon">▣</div><div class="lbl">Build</div></div>
+        <div class="p-stage"><div class="icon">▤</div><div class="lbl">Docker Image</div></div>
+        <div class="p-stage"><div class="icon">⬡</div><div class="lbl">Amazon ECR</div></div>
+        <div class="p-stage"><div class="icon">⎈</div><div class="lbl">EKS</div></div>
+        <div class="p-stage"><div class="icon">☁</div><div class="lbl">Deploy</div></div>
+      </div>
+
+      <div class="dash">
+        <div>
+          <div class="k">Build</div>
+          <div class="v" id="pBuild">#041</div>
+        </div>
+        <div>
+          <div class="k">Status</div>
+          <div class="v" id="pStatus">Queued</div>
+        </div>
+        <div>
+          <div class="k">Deployment progress</div>
+          <div class="v" id="pPct">0%</div>
+          <div class="bar"><i id="pBar"></i></div>
+        </div>
+      </div>
+      <p class="sim-note">Simulated example for illustration. Build numbers and statuses are not from a real run.</p>
+    </div>
+  </section>
+
+  <!-- Scene 4: projects as planets -->
+  <section class="beat tall" data-beat="projects" id="projects">
+    <div class="eyebrow" data-reveal>▸ Scene 04 · Mission log</div>
+    <h2 class="big h2-sub" data-reveal>Three <span class="grad">planets</span>, three projects.</h2>
+    <p class="lead" data-reveal style="margin-top:12px">Hover or tap a planet to see the project.</p>
+
+    <div class="planets" data-reveal>
+      <button class="planet on" data-project="0" aria-label="CI/CD on Kubernetes project">
+        <span class="globe p1"></span><span class="ring"></span><span class="name">CI/CD on Kubernetes</span>
+      </button>
+      <button class="planet" data-project="1" aria-label="AWS 3-tier architecture project">
+        <span class="globe p2"></span><span class="ring"></span><span class="name">3-Tier on AWS</span>
+      </button>
+      <button class="planet" data-project="2" aria-label="Disaster recovery project">
+        <span class="globe p3"></span><span class="ring"></span><span class="name">DR with AWS DRS</span>
+      </button>
+    </div>
+
+    <div class="glass planet-info" id="planetInfo" data-reveal aria-live="polite"></div>
+  </section>
+
+  <!-- Scene 5: experience and qualifications -->
+  <section class="beat tall" data-beat="exp" id="experience">
+    <div class="eyebrow" data-reveal>▸ Scene 05 · Flight record</div>
+    <h2 class="big h2-sub" data-reveal>Where I've <span class="grad">flown</span>.</h2>
+
+    <div class="flight" data-reveal>
+      <div class="glass flight-item">
+        <div class="when">Apr 2026 – Present</div>
+        <div>
+          <h3>System Analyst – Production &amp; DevOps Support</h3>
+          <div class="co">The Zigma Technologies India (P) Ltd · Chennai</div>
+          <ul>
+            <li>Production support and troubleshooting for ELCOT and Tamil Nadu Guidance systems</li>
+            <li>Log, metric and error-trace analysis for root cause and incident resolution</li>
+            <li>Support CI/CD activity: pre-deployment checks, testing coordination, release work</li>
+          </ul>
+        </div>
+      </div>
+      <div class="glass flight-item">
+        <div class="when">Jan 2023 – Mar 2026</div>
+        <div>
+          <h3>Software Analyst</h3>
+          <div class="co">IND Innovation Pvt Ltd (client: TCS) · Chennai</div>
+          <ul>
+            <li>Managed production web applications for Tamil Nadu Government departments</li>
+            <li>Defect logging, tracking and validation; coordinated fixes with delivery teams</li>
+            <li>Requirement gathering and gap analysis with department officials</li>
+          </ul>
+        </div>
+      </div>
+      <div class="glass flight-item">
+        <div class="when">Apr 2021 – Dec 2022</div>
+        <div>
+          <h3>System Administrator</h3>
+          <div class="co">APM Terminals Pvt Ltd · Chennai</div>
+          <ul>
+            <li>System installation, configuration and network troubleshooting</li>
+            <li>User access management and infrastructure documentation</li>
+          </ul>
+        </div>
+      </div>
+      <div class="glass flight-item">
+        <div class="when">Sep 2019 – Feb 2021</div>
+        <div>
+          <h3>QA Analyst</h3>
+          <div class="co">APM Terminals Pvt Ltd · Chennai</div>
+          <ul>
+            <li>Functional and manual testing; defect reporting and MIS reports</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="qual" data-reveal>
+      <div class="glass">
+        <h3>Certifications &amp; training</h3>
+        <ul>
+          <li><strong>AWS Certified Solutions Architect – Associate</strong><br><span class="mono">Issued July 2025 · <a href="https://www.credly.com/badges/69cea99a-4892-4a77-93bd-7b2b4d623102" target="_blank" rel="noopener">verify on Credly</a></span></li>
+          <li><strong>NSDC AI-DevOps Foundational Certification</strong></li>
+          <li><strong>AWS, DevOps &amp; Kubernetes Training</strong><br><span class="mono">Green Technologies, Chennai</span></li>
+        </ul>
+      </div>
+      <div class="glass">
+        <h3>Education</h3>
+        <ul>
+          <li><strong>MBA (Business Administration)</strong><br><span class="mono">Tamil Nadu Open University · 2023</span></li>
+          <li><strong>BCA (Computer Applications)</strong><br><span class="mono">University of Madras · 2019</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scene 6: tool galaxy -->
+  <section class="beat tall" data-beat="skills" id="skills">
+    <div class="eyebrow" data-reveal>▸ Scene 06 · Skills galaxy</div>
+    <h2 class="big h2-sub" data-reveal>My <span class="grad">tool galaxy</span>.</h2>
+    <p class="lead" data-reveal style="margin-top:12px">The tools I work with, spinning around the core. Inner orbits move faster than outer ones. Hover a tool to highlight it.</p>
+
+    <div class="galaxy-wrap glass" data-reveal style="padding:0; margin-top:22px">
+      <div class="disc" id="galaxy">
+        <div class="dust"></div>
+        <div class="core"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scene 7: contact and departure -->
+  <section class="beat" data-beat="contact" id="contact">
+    <div class="eyebrow" data-reveal>▸ Scene 07 · Open channel</div>
+    <h2 class="big h2-sub" data-reveal>Let's <span class="grad">connect</span>.</h2>
+    <div class="contact-grid" data-reveal>
+      <a href="mailto:pradeepmathew115@gmail.com"><span class="k">Email</span>pradeepmathew115@gmail.com</a>
+      <a href="tel:+919940368943"><span class="k">Phone</span>+91 99403 68943</a>
+      <a href="https://www.linkedin.com/in/pradeepe1" target="_blank" rel="noopener"><span class="k">LinkedIn</span>linkedin.com/in/pradeepe1</a>
+      <a href="https://github.com/pradee6" target="_blank" rel="noopener"><span class="k">GitHub</span>github.com/pradee6</a>
+    </div>
+    <p class="outro" data-reveal style="margin-top:44px">Thanks for visiting my universe!</p>
+  </section>
+
+</main>
+
+<footer class="site">E. Pradeep · Chennai, Tamil Nadu · DevOps &amp; Cloud Engineer</footer>
+
+<script>
+(function () {
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var ufo = document.getElementById("ufo");
+  var alien = document.getElementById("alien");
+  var bubble = document.getElementById("bubble");
+  var loader = document.getElementById("loader");
+
+  setTimeout(function () { loader.classList.add("hide"); }, 1900);
+
+  /* Reveal sections as they enter the view */
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("show"); io.unobserve(e.target); } });
+  }, { threshold: 0.18 });
+  document.querySelectorAll("[data-reveal]").forEach(function (el) { io.observe(el); });
+
+  /* Scroll-driven UFO path: one stop per scene, interpolated between scenes. */
+  var stops = {
+    intro:    { x: 80, y: 24, s: 0.55, o: 1,  mood: "curious", say: "Hmm... where am I?" },
+    greet:    { x: 50, y: 60, s: 0.9,  o: 1,  mood: "wave",    say: "Hi, welcome to my portfolio!" },
+    pipe:     { x: 14, y: 40, s: 0.6,  o: 1,  mood: "point",   say: "Watch this pipeline!" },
+    projects: { x: 86, y: 44, s: 0.6,  o: 1,  mood: "smile",   say: "Pick a planet." },
+    exp:      { x: 16, y: 34, s: 0.55, o: 1,  mood: "point",   say: "Here's my flight record." },
+    skills:   { x: 50, y: 24, s: 0.5,  o: 1,  mood: "curious", say: "My tools orbit here." },
+    contact:  { x: 50, y: -30, s: 0.3, o: 0,  mood: "wave",    say: "Thanks for visiting!" }
+  };
+  var order = ["intro", "greet", "pipe", "projects", "exp", "skills", "contact"];
+  var beatEls = order.map(function (k) { return document.querySelector('[data-beat="' + k + '"]'); });
+  var currentMood = "";
+  var currentSay = "";
+
+  function setMood(m) { if (m !== currentMood) { alien.className = "alien " + m; currentMood = m; } }
+  function setSay(t) { if (t !== currentSay) { bubble.textContent = t; currentSay = t; } }
+  function place(x, y, s, o) {
+    ufo.style.left = x + "%";
+    ufo.style.top = y + "%";
+    ufo.style.transform = "translate(-50%, -50%) scale(" + s.toFixed(3) + ")";
+    ufo.style.opacity = o.toFixed(3);
+  }
+
+  function update() {
+    var y = window.scrollY + window.innerHeight * 0.45;
+    var idx = 0;
+    for (var i = 0; i < beatEls.length; i++) {
+      if (beatEls[i] && beatEls[i].offsetTop <= y) idx = i;
+    }
+    var key = order[idx];
+    var a = stops[key];
+    var next = order[idx + 1] ? stops[order[idx + 1]] : a;
+    var start = beatEls[idx].offsetTop;
+    var end = beatEls[idx + 1] ? beatEls[idx + 1].offsetTop : start + beatEls[idx].offsetHeight;
+    var t = Math.max(0, Math.min(1, (y - start) / Math.max(1, end - start)));
+    var ease = t * t * (3 - 2 * t);
+
+    place(
+      a.x + (next.x - a.x) * ease,
+      a.y + (next.y - a.y) * ease,
+      a.s + (next.s - a.s) * ease,
+      a.o + (next.o - a.o) * ease
+    );
+    setMood(a.mood);
+    setSay(a.say);
+    bubble.classList.toggle("on", (t > 0.1 && t < 0.92) || (idx === 1 && t > 0.05));
+    ufo.classList.toggle("landed", key === "greet");
+    alien.classList.toggle("stand", key === "greet");
+  }
+
+  var ticking = false;
+  window.addEventListener("scroll", function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(function () { update(); ticking = false; }); }
+  }, { passive: true });
+  window.addEventListener("resize", update);
+
+  if (reduce) {
+    place(50, 60, 0.9, 1);
+    alien.className = "alien wave stand";
+    bubble.textContent = "Hi, welcome to my portfolio!";
+    bubble.classList.add("on");
+    ufo.classList.add("landed");
+  } else {
+    update();
+  }
+
+  /* CI/CD pipeline: the light travels stage to stage, then the loop restarts. */
+  var stagesEl = Array.prototype.slice.call(document.querySelectorAll(".p-stage"));
+  var dot = document.getElementById("pipeDot");
+  var pStatus = document.getElementById("pStatus");
+  var pBar = document.getElementById("pBar");
+  var pPct = document.getElementById("pPct");
+  var pBuild = document.getElementById("pBuild");
+  var statuses = ["Queued", "Triggered", "Received", "Building", "Building image", "Testing", "Pushing Image", "Deploying", "Deploy Successful"];
+  var buildNo = 41;
+  var step = 0;
+  var n = stagesEl.length;
+  var holding = false;
+
+  function paint() {
+    stagesEl.forEach(function (el, i) {
+      el.classList.toggle("active", i === step);
+      el.classList.toggle("done", i < step);
+    });
+    dot.style.left = (5 + (90 * step) / (n - 1)) + "%";
+    var pct = Math.round(((step + 1) / n) * 100);
+    pStatus.textContent = statuses[step];
+    pStatus.classList.toggle("ok", step === n - 1);
+    pBar.style.width = pct + "%";
+    pPct.textContent = pct + "%";
+    pBuild.textContent = "#" + String(buildNo).padStart(3, "0");
+  }
+
+  if (!reduce && stagesEl.length) {
+    paint();
+    setInterval(function () {
+      if (holding) return;
+      if (step === n - 1) {
+        // Hold on "Deploy Successful", then start the next simulated build.
+        holding = true;
+        setTimeout(function () {
+          buildNo++;
+          step = 0;
+          paint();
+          holding = false;
+        }, 1800);
+        return;
+      }
+      step++;
+      paint();
+    }, 900);
+  } else {
+    step = n - 1;
+    paint();
+  }
+
+  /* Project planets */
+  var projects = [
+    { name: "End-to-end CI/CD on Kubernetes", items: [
+      "Pipeline: GitHub → Jenkins build → SonarQube scan → Docker image → Trivy scan → Kubernetes deploy",
+      "Deployed and validated in staging and production clusters",
+      "Email alerts on build success and failure"],
+      stack: "GitHub · Jenkins · Docker · Kubernetes (Kops) · SonarQube · Trivy" },
+    { name: "Scalable 3-tier web app on AWS", items: [
+      "Multi-AZ design with load balancing and auto scaling",
+      "PostgreSQL on RDS with automated backups and multi-AZ replication",
+      "CloudWatch dashboards and SNS alerts; IAM least-privilege access"],
+      stack: "EC2 · ALB · RDS · S3 · Route 53 · IAM · CloudWatch" },
+    { name: "Disaster recovery with AWS DRS", items: [
+      "Set up Elastic Disaster Recovery for production backup and recovery",
+      "Automated monitoring and alerts for backup operations",
+      "Ran restore exercises and root cause analysis on recovery checks"],
+      stack: "AWS DRS · Lambda · CloudWatch · S3" }
+  ];
+  var info = document.getElementById("planetInfo");
+  var planets = Array.prototype.slice.call(document.querySelectorAll(".planet"));
+  function showProject(i) {
+    var p = projects[i];
+    planets.forEach(function (b, j) { b.classList.toggle("on", j === i); });
+    info.innerHTML = "";
+    var h = document.createElement("h3"); h.textContent = p.name; info.appendChild(h);
+    var ul = document.createElement("ul");
+    p.items.forEach(function (t) { var li = document.createElement("li"); li.textContent = t; ul.appendChild(li); });
+    info.appendChild(ul);
+    var s = document.createElement("div"); s.className = "stack"; s.textContent = p.stack; info.appendChild(s);
+  }
+  planets.forEach(function (b, i) {
+    b.addEventListener("click", function () { showProject(i); });
+    b.addEventListener("mouseenter", function () { showProject(i); });
+    b.addEventListener("focus", function () { showProject(i); });
+  });
+  showProject(0);
+
+  /* Tool galaxy: each tool sits on a spiral arm at its own radius. Inner
+     orbits spin faster (differential rotation), so the disc looks alive. */
+  var gal = document.getElementById("galaxy");
+  var tools = [
+    ["AWS", 0, 0], ["Docker", 0, 1], ["Kubernetes", 1, 0], ["Jenkins", 1, 1],
+    ["Git", 2, 0], ["GitHub", 2, 1], ["Terraform", 3, 0], ["Ansible", 3, 1],
+    ["Linux", 4, 0], ["Python", 4, 1], ["CI/CD", 5, 0]
+  ];
+  tools.forEach(function (t) {
+    var rank = t[1], arm = t[2];
+    var r = 90 + rank * 40;
+    var angle = arm * 180 + rank * 52 + (rank % 2 ? 14 : 0);
+    var duration = 22 + rank * 12;
+    var orb = document.createElement("div");
+    orb.className = "orb";
+    orb.style.setProperty("--d", duration + "s");
+    var tool = document.createElement("div");
+    tool.className = "tool" + (t[0] === "CI/CD" ? " cloud" : "");
+    tool.style.setProperty("--a", angle + "deg");
+    tool.style.setProperty("--r", r + "px");
+    var label = document.createElement("span");
+    label.className = "tool-label";
+    label.textContent = t[0];
+    tool.appendChild(label);
+    orb.appendChild(tool);
+    gal.appendChild(orb);
+  });
+
+  /* Eight planets on their own orbits, interleaved with the tools */
+  var planetList = [
+    ["Mercury", "#d9c7a6", "#6b5a44"], ["Venus", "#ffe2a8", "#a86f2a"],
+    ["Earth", "#9fdcff", "#1d5fa8"],   ["Mars", "#ff9a6b", "#8a2d12"],
+    ["Jupiter", "#f5d3a0", "#8a5a2a"], ["Saturn", "#f2e3a6", "#8a7a3a"],
+    ["Uranus", "#bff3ff", "#2a7a8a"],  ["Neptune", "#8ab4ff", "#1a2f8a"]
+  ];
+  planetList.forEach(function (p, k) {
+    var r = 110 + k * 36;
+    var angle = k * 45 + 12;
+    var duration = 70 + k * 10;
+    var orb = document.createElement("div");
+    orb.className = "orb";
+    orb.style.setProperty("--d", duration + "s");
+    var tool = document.createElement("div");
+    tool.className = "tool planet-tool";
+    tool.style.setProperty("--a", angle + "deg");
+    tool.style.setProperty("--r", r + "px");
+    var label = document.createElement("span");
+    label.className = "tool-label planet-label";
+    label.textContent = p[0];
+    label.style.setProperty("--c1", p[1]);
+    label.style.setProperty("--c2", p[2]);
+    tool.appendChild(label);
+    orb.appendChild(tool);
+    gal.appendChild(orb);
+  });
+})();
+</script>
+
+</body></html>
